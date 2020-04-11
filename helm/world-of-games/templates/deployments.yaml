@@ -1,0 +1,109 @@
+{{- $root := .Values -}}
+{{- $rootDeployments := $root.deployments -}}
+{{- $rootDBDeployment := $rootDeployments.db -}}
+{{- $rootServices := $root.services -}}
+{{- range $indexd, $curr := $rootDeployments.list }}
+apiVersion: {{ $rootDeployments.version }} # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ $curr.name }}
+  labels:
+    app: {{ $curr.selector }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ $curr.selector }}
+  replicas: {{ $curr.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ $curr.selector }}
+    spec:
+      containers:
+      - name: {{ $curr.name }}
+        image: {{ $curr.image }}
+        resources:
+          requests:
+            cpu: {{ $curr.cpu }}
+            memory: {{ $curr.memory }}
+        env:
+        - name: GET_HOSTS_FROM
+          value: dns
+        - name: MYSQL_DB_SERVER
+          value: {{ $rootServices.db.name }}
+        - name: MYSQL_DB_PORT
+          value: "{{ $rootServices.db.port }}"
+        - name: MYSQL_DB_NAME
+          value: games
+        - name: MYSQL_DB_USERNAME
+          value: worldofgames
+        - name: MYSQL_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+                name: db-secret
+                key: password
+          # Using `GET_HOSTS_FROM=dns` requires your cluster to
+          # provide a dns service. As of Kubernetes 1.3, DNS is a built-in
+          # service launched automatically. However, if the cluster you are using
+          # does not have a built-in DNS service, you can instead
+          # access an environment variable to find the master
+          # service's host. To do so, comment out the 'value: dns' line above, and
+          # uncomment the line below:
+          # value: env
+        ports:
+        - containerPort: 80
+---
+{{- end }}
+apiVersion: {{ $rootDeployments.version }} # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ $rootDBDeployment.name }}
+  labels:
+    app: {{ $rootDBDeployment.name }}
+    role: db
+    tier: backend
+spec:
+  selector:
+    matchLabels:
+      app: {{ $rootDBDeployment.name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ $rootDBDeployment.name }}
+        role: db
+        tier: backend
+    spec:
+      containers:
+          - name: {{ $rootDBDeployment.name }}
+            image: {{ $rootDBDeployment.image }}
+            resources:
+              requests:
+                cpu: {{ $rootDBDeployment.cpu }}
+                memory: {{ $rootDBDeployment.memory }}
+            ports:
+            - containerPort: 3306
+            env:
+            - name: GET_HOSTS_FROM
+              value: dns
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                    name: db-secret
+                    key: password
+            - name: MYSQL_DATABASE
+              value: games
+            - name: MYSQL_USER
+              value: worldofgames
+            - name: MYSQL_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                    name: db-secret
+                    key: password
+            volumeMounts:
+            - name: wog-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: wog-persistent-storage
+          persistentVolumeClaim:
+            claimName: wogdb-pv-claim

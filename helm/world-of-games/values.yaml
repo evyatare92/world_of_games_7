@@ -1,0 +1,77 @@
+services:
+  version: v1
+  domain: wog.com
+  db:
+      name: wogdb
+      type: ClusterIP
+      selector: wogdb
+      port: 3306
+  games:
+  - name: wog-maingame-svc
+    type: ClusterIP
+    selector: maingame
+    nodeport: 30000
+    path: /gamepicker
+  - name: wog-guessgame-svc
+    type: ClusterIP
+    selector: guessgame
+    nodeport: 30002
+    path: /guessgame
+  - name: wog-memorygame-svc
+    type: ClusterIP
+    selector: memorygame
+    nodeport: 30001
+    path: /memorygame
+  - name: wog-currecyrollete-svc
+    type: ClusterIP
+    selector: currecyrollete
+    nodeport: 30003
+    path: /currecyrollete
+  - name: wog-scores-svc
+    type: ClusterIP
+    selector: scores
+    nodeport: 30004
+    path: /getscore
+
+deployments:
+  version: apps/v1
+  db:
+    name: wogdb
+    replicaCount: 1
+    image: evyatare92/wog_db
+    cpu: 200m
+    memory: 1024Mi
+  list:
+  - name: wog-currecyrollete
+    replicaCount: 1
+    image: evyatare92/wog_currecyrollete
+    cpu: 100m
+    memory: 256Mi
+    selector: currecyrollete
+  - name: wog-guessgame
+    replicaCount: 1
+    image: evyatare92/wog_guessgame
+    cpu: 100m
+    memory: 256Mi
+    selector: guessgame
+  - name: wog-maingame
+    replicaCount: 1
+    image: evyatare92/wog_maingame
+    cpu: 100m
+    memory: 256Mi
+    selector: maingame
+  - name: wog-memorygame
+    replicaCount: 1
+    image: evyatare92/wog_memorygame
+    cpu: 100m
+    memory: 256Mi
+    selector: memorygame
+  - name: wog-scores
+    replicaCount: 1
+    image: evyatare92/wog_scores
+    cpu: 100m
+    memory: 256Mi
+    selector: scores
+
+dbPassword: worldofgames
+dbSize: 5Gi

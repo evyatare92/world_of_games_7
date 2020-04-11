@@ -1,0 +1,48 @@
+{{- $root := .Values -}}
+{{- $rootDeployments := $root.deployments -}}
+{{- $rootServices := $root.services -}}
+{{- $rootDBService := $rootServices.db -}}
+{{- range $indexs, $curr := $rootServices.games }}
+apiVersion: {{ $rootServices.version }}
+kind: Service
+metadata:
+  name: {{ $curr.name }}
+  labels:
+    app: {{ $curr.name }}
+spec:
+  # comment or delete the following line if you want to use a LoadBalancer
+  type: {{ $curr.type }} 
+  # if your cluster supports it, uncomment the following to automatically create
+  # an external load-balanced IP for the frontend service.
+  # type: LoadBalancer
+  ports:
+  - port: 80
+    {{- if eq $curr.type "NodePort" }}
+    nodePort: {{$curr.nodeport}}
+    {{- end }}
+    name: http
+  selector:
+    app: {{ $curr.selector }}
+
+---
+{{- end }}
+apiVersion: {{ .Values.services.version }}
+kind: Service
+metadata:
+  name: {{ $rootDBService.name }}
+  labels:
+    app: {{ $rootDBService.name }}
+spec:
+  # comment or delete the following line if you want to use a LoadBalancer
+  type: {{ $rootDBService.type }} 
+  # if your cluster supports it, uncomment the following to automatically create
+  # an external load-balanced IP for the frontend service.
+  # type: LoadBalancer
+  ports:
+  - port: {{ $rootDBService.port }}
+    {{- if eq $rootDBService.type "NodePort" }}
+    nodePort: 30010
+    {{- end }}
+    name: http
+  selector:
+    app: {{ $rootDBService.selector }}

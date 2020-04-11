@@ -1,0 +1,26 @@
+{{- $root := .Values -}}
+{{- $rootDeployments := $root.deployments -}}
+{{- $rootServices := $root.services -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: games-path
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.frontend.rule.type: PathPrefixStrip
+spec:
+  rules:
+  - host: {{ $rootServices.domain | quote }}
+    http:
+      paths:
+      - path: /welcome
+        backend:
+          serviceName: wog-maingame-svc
+          servicePort: http
+      {{- range $indexs, $curr := $rootServices.games }}
+      - path: {{ $curr.path }}
+        backend:
+          serviceName: {{ $curr.name }}
+          servicePort: http
+      {{- end }}
+     
