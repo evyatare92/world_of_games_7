@@ -32,8 +32,8 @@ deployments:
   db:
     name: wogdb
     replicaCount: 1
-    image: mysql:5.7
-    cpu: 100m
+    image: evyatare92/wog7db
+    cpu: 300m
     memory: 1024Mi
   list:
   - name: wog-currecyrollete
@@ -69,4 +69,3 @@ deployments:
 
 dbPassword: worldofgames
 dbSize: 5Gi
-dbInitScriptLocation: /c/Users/DB
