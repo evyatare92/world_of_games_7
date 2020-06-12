@@ -33,31 +33,31 @@ deployments:
   list:
   - name: wog-currecyrollete
     replicaCount: 1
-    image: evyatare92/wog_currecyrollete
+    image: evyatare92/wog7-currecyrollete
     cpu: 100m
     memory: 256Mi
     selector: currecyrollete
   - name: wog-guessgame
     replicaCount: 1
-    image: evyatare92/wog_guessgame
+    image: evyatare92/wog7-guessgame
     cpu: 100m
     memory: 256Mi
     selector: guessgame
   - name: wog-maingame
     replicaCount: 1
-    image: evyatare92/wog_maingame
+    image: evyatare92/wog7-maingame
     cpu: 100m
     memory: 256Mi
     selector: maingame
   - name: wog-memorygame
     replicaCount: 1
-    image: evyatare92/wog_memorygame
+    image: evyatare92/wog7-memorygame
     cpu: 100m
     memory: 256Mi
     selector: memorygame
   - name: wog-scores
     replicaCount: 1
-    image: evyatare92/wog_scores
+    image: evyatare92/wog7-scores
     cpu: 100m
     memory: 256Mi
     selector: scores
