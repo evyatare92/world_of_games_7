@@ -30,3 +30,4 @@ spec:
         backend:
           serviceName: wog-scores-svc
           servicePort: http
+          
