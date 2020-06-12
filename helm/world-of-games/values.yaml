@@ -1,6 +1,5 @@
 services:
   version: v1
-  domain: wog.com
   db:
       name: wogdb
       type: ClusterIP
@@ -8,38 +7,33 @@ services:
       port: 3306
   games:
   - name: wog-maingame-svc
-    type: ClusterIP
+    type: NodePort
     selector: maingame
     nodeport: 30000
-    path: /gamepicker
   - name: wog-guessgame-svc
-    type: ClusterIP
+    type: NodePort
     selector: guessgame
     nodeport: 30002
-    path: /guessgame
   - name: wog-memorygame-svc
-    type: ClusterIP
+    type: NodePort
     selector: memorygame
     nodeport: 30001
-    path: /memorygame
   - name: wog-currecyrollete-svc
-    type: ClusterIP
+    type: NodePort
     selector: currecyrollete
     nodeport: 30003
-    path: /currecyrollete
   - name: wog-scores-svc
-    type: ClusterIP
+    type: NodePort
     selector: scores
     nodeport: 30004
-    path: /getscore
 
 deployments:
   version: apps/v1
   db:
     name: wogdb
     replicaCount: 1
-    image: evyatare92/wog_db
-    cpu: 200m
+    image: mysql:5.7
+    cpu: 100m
     memory: 1024Mi
   list:
   - name: wog-currecyrollete
@@ -75,3 +69,4 @@ deployments:
 
 dbPassword: worldofgames
 dbSize: 5Gi
+dbInitScriptLocation: /c/Users/DB

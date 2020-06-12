@@ -1,5 +1,5 @@
 from random import randint
-from flask import Flask, redirect, request
+from flask import Flask, redirect, request, render_template
 import Score
 
 app = Flask(__name__)
@@ -33,34 +33,16 @@ def compare_results(user_num):
     user_num = validate_user_num(user_num)
     return user_num == secret_number
 
+
 @app.route('/guessgame', methods=['GET'])
 def load_screen():
     global difficulty, secret_number
     difficulty = int(request.args.get('difficulty'))
     generate_number()
-    return "<html><head><title>" + "\n" \
-           "World of games - Guess Game</title>" + "\n" \
-           "</head>" + "\n" \
-           "<script>" + "\n" \
-           "	function playgame(){" + "\n" \
-           "		var e = document.getElementById('choise');" + "\n" \
-           "		var result = e.value;" + "\n" \
-           "		var url = 'http://' + window.location.hostname + ':' + window.location.port + '/answer?user_num=' + result" + "\n" \
-           "		console.log(url);" + "\n" \
-           "		window.open(url, '_self')" + "\n" \
-           "	}" + "\n" \
-           "</script>" + "\n" \
-           "<body>" + "\n" \
-           "<h1>Guess Game</h1>" + "\n" \
-           "<br>" + "\n" \
-           f"<label for='choise'>Please enter a number between 1 and {difficulty}:</label>" + "\n" \
-           "<input type='text' id='choise'>" + "\n" \
-           "<br><br>" + "\n" \
-           "<button id='btn_play' type='button' onclick='playgame()'>Play</button>" + "\n" \
-           "</body>" + "\n" \
-           "</html>"
+    return render_template('guess.html', difficulty=difficulty)
 
-@app.route('/answer', methods=['GET'])
+
+@app.route('/gg_answer', methods=['GET'])
 def play():
     global difficulty, secret_number
     user_num = request.args.get('user_num')
@@ -76,22 +58,7 @@ def play():
     except BaseException as e:
         text = e
         color = "red"
-    return  f"<html><head>" + "\n" \
-            f"<title>Guess Game</title>" + "\n" \
-            f"<script>" + "\n" \
-            "function playagain(){" + "\n" \
-            f"		var url = 'http://' + window.location.hostname + ':' + window.location.port + '/guessgame?difficulty=' + {difficulty}" + "\n" \
-            "		console.log(url);" + "\n" \
-            "		window.open(url, '_self')" + "\n" \
-            "	}" + "\n" \
-            f"</script>" + "\n" \
-            f"</head><body>" + "\n" \
-            f"<h1><div id='answer' style=\"color:{color}\">" + "\n" \
-            f"{text}</div></h1>" + "\n" \
-            f"<br><br>" + "\n" \
-            f"<button  type='button' onclick='playagain()'>Play Again</button>" + "\n" \
-            f"</body>" + "\n" \
-            f"</html>"
+    return render_template('answer.html', color=color, text=text, difficulty=difficulty)
 
 def save_score():
     global difficulty

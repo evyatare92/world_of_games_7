@@ -1,0 +1,24 @@
+<html>
+    <head>
+           <title>World of games - Guess Game</title>
+    </head>
+           <script>
+            function playgame(){
+                var protocol = window.location.protocol
+                var hostname = window.location.hostname
+                var e = document.getElementById('choise');
+                var result = e.value;
+                var url = protocol + '//' + hostname + ':' + window.location.port + '/gg_answer?user_num=' + result
+                console.log(url);
+                window.open(url, '_self')
+            }
+           </script>
+    <body>
+           <h1>Guess Game</h1>
+           <br>
+           <label for='choise'>Please enter a number between 1 and {{difficulty}}:</label>
+           <input type='text' id='choise'>
+           <br><br>
+           <button id='btn_play' type='button' onclick='playgame()'>Play</button>
+    </body>
+</html>

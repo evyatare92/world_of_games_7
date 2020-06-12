@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>Guess Game</title>
+        <script>
+           function playagain(){
+            var protocol = window.location.protocol
+            var hostname = window.location.hostname
+           	var url = protocol + '//' + hostname + ':' + window.location.port + '/guessgame?difficulty=' + {{difficulty}}
+           	console.log(url);
+           	window.open(url, '_self')
+           }
+        </script>
+        </head>
+    <body>
+        <h1>
+            <div id='answer' style="color:{{color}}">
+                {{text}}
+            </div>
+        </h1>
+        <br><br>
+        <button  type='button' onclick='playagain()'>Play Again</button>
+    </body>
+</html>

@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <title>World of games - Currency Rollete Game</title>
+    </head>
+    <script>
+        function playgame(){
+            var protocol = window.location.protocol
+            var hostname = window.location.hostname
+            var e = document.getElementById('shekels');
+            var result = e.value;
+            var url = protocol + '//' + hostname + ':' + window.location.port + '/cr_answer?shekels=' + result
+            console.log(url);
+            window.open(url, '_self')
+        }
+    </script>
+    <body>
+        <h1>Curreny Rollete Game</h1>
+        <br>
+        "How much is <div id='dollars' style='color:red'>{{usd_amount}}</div> dollars worth in shekels?<br>
+        <input type='text' id='shekels'>
+        <br><br>
+        <button id='btn_play' type='button' onclick='playgame()'>Play</button>
+    </body>
+</html>

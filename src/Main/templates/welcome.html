@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>World of games</title>
+        <script>
+            function playgame(){
+                var protocol = window.location.protocol
+                var hostname = window.location.hostname
+                var url = protocol + '//'+ hostname + ':' + window.location.port +'/gamepicker';
+                window.open(url, '_self')
+            }
+       </script>
+    </head>
+    <body>
+        <h1>Welcome to the world of games!</h1>
+        <br>
+        <button type='button' onclick='playgame()'>Click here to play</button>
+    </body>
+</html>

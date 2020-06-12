@@ -1,6 +1,5 @@
 from random import randint
-from time import sleep
-from flask import Flask, redirect, request
+from flask import Flask, redirect, request, render_template
 import Score
 
 app = Flask(__name__)
@@ -36,37 +35,10 @@ def load_screen():
     difficulty = int(request.args.get('difficulty'))
     comp_list = generate_sequence()
     join_list = ','.join(str(x) for x in comp_list)
-    return "<html><head><title>" + "\n" \
-           "World of games - Memory Game</title>" + "\n" \
-           "</head>" + "\n" \
-           "<script>" + "\n" \
-           "	function loadgame(){" + "\n" \
-           "		var e = document.getElementById('secret');" + "\n" \
-           f"		e.innerText = '{join_list}';" + "\n" \
-           "		setTimeout(() => { e.innerText = ''; }," \
-           f"{TIME * 1000});" + "\n" \
-           "	}" + "\n" \
-           "	function playgame(){" + "\n" \
-           "		var e = document.getElementById('numbers');" + "\n" \
-           "		var result = e.value;" + "\n" \
-           "		var url = 'http://' + window.location.hostname + ':' + window.location.port + '/answer?numbers=' + result" + "\n" \
-           "		console.log(url);" + "\n" \
-           "		window.open(url, '_self')" + "\n" \
-           "	}" + "\n" \
-           "</script>" + "\n" \
-           "<body onload='loadgame()'>" + "\n" \
-           "<h1>Memory Game</h1>" + "\n" \
-           "<br>" + "\n" \
-           "<h2>Remember this numbers: </h2>" \
-           "<div id='secret' style='color:red'></div><br>" \
-           "<label for='numbers'>Please enter the numbers you saw, seperated by commas:</label>" + "\n" \
-           "<input type='text' id='numbers'>" + "\n" \
-           "<br><br>" + "\n" \
-           "<button id='btn_play' type='button' onclick='playgame()'>Play</button>" + "\n" \
-           "</body>" + "\n" \
-           "</html>"
+    return render_template('memory.html', time=TIME * 1000, join_list=join_list)
 
-@app.route('/answer', methods=['GET'])
+
+@app.route('/mg_answer', methods=['GET'])
 def play():
     global difficulty, comp_list
     try:
@@ -83,22 +55,7 @@ def play():
     except ValueError as e:
         text = e
         color = "red"
-    return f"<html><head>" + "\n" \
-        f"<title>Memory Game</title>" + "\n" \
-               f"<script>" + "\n" \
-                "function playagain(){" + "\n" \
-               f"	var url = 'http://' + window.location.hostname + ':' + window.location.port + '/memorygame?difficulty=' + {difficulty}" + "\n" \
-               "	console.log(url);" + "\n" \
-               "	window.open(url, '_self')" + "\n" \
-               "}" + "\n" \
-               f"</script>" + "\n" \
-               f"</head><body>" + "\n" \
-               f"<h1><div id='answer' style=\"color:{color}\">" + "\n" \
-               f"{text}</div></h1>" + "\n" \
-               f"<br><br>" + "\n" \
-               f"<button  type='button' onclick='playagain()'>Play Again</button>" + "\n" \
-               f"</body>" + "\n" \
-               f"</html>"
+    return render_template('answer.html', color=color, text=text, difficulty=difficulty)
 
 def save_score():
     global difficulty

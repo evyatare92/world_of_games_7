@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPy . /app
 
-EXPOSE 30001
+EXPOSE 80
 
 RUN pip install --requirement /app/requirements.txt
 

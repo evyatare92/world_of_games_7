@@ -2,7 +2,7 @@ from random import randint
 import requests
 import json
 import Score
-from flask import Flask, redirect, request
+from flask import Flask, redirect, request, render_template
 
 app = Flask(__name__)
 
@@ -27,35 +27,17 @@ def get_guess_from_user():
     usd_amount = randint(1, MAX_NUMBER)
     return float(input('How much {} dollars are in shekels?: '.format(usd_amount)))
 
+
 @app.route('/currecyrollete', methods=['GET'])
 def load_screen():
     global difficulty, usd_amount
     difficulty = int(request.args.get('difficulty'))
     load_currency_rate()
     usd_amount = randint(1, MAX_NUMBER)
-    return "<html><head><title>" + "\n" \
-           "World of games - Currency Rollete Game</title>" + "\n" \
-           "</head>" + "\n" \
-           "<script>" + "\n" \
-           "	function playgame(){" + "\n" \
-           "		var e = document.getElementById('shekels');" + "\n" \
-           "		var result = e.value;" + "\n" \
-           "		var url = 'http://' + window.location.hostname + ':' + window.location.port + '/answer?shekels=' + result" + "\n" \
-           "		console.log(url);" + "\n" \
-           "		window.open(url, '_self')" + "\n" \
-           "	}" + "\n" \
-           "</script>" + "\n" \
-           "<body>" + "\n" \
-           "<h1>Curreny Rollete Game</h1>" + "\n" \
-           "<br>" + "\n" \
-           f"How much is <div id='dollars' style='color:red'>{usd_amount}</div> dollars worth in shekels?<br>" + "\n" \
-           "<input type='text' id='shekels'>" + "\n" \
-           "<br><br>" + "\n" \
-           "<button id='btn_play' type='button' onclick='playgame()'>Play</button>" + "\n" \
-           "</body>" + "\n" \
-           "</html>"
+    return render_template('currecy.html', usd_amount=usd_amount)
 
-@app.route('/answer', methods=['GET'])
+
+@app.route('/cr_answer', methods=['GET'])
 def play():
     global difficulty,usd_amount, ils_usd_rate
     try:
@@ -73,22 +55,7 @@ def play():
     except ValueError as e:
         text = e
         color = "red"
-    return f"<html><head>" + "\n" \
-           f"<title>Memory Game</title>" + "\n" \
-           "<script>" + "\n" \
-           "function playagain(){" + "\n" \
-           f"	var url = 'http://' + window.location.hostname + ':' + window.location.port + '/currecyrollete?difficulty=' + {difficulty}" + "\n" \
-           "	console.log(url);" + "\n" \
-           "	window.open(url, '_self')" + "\n" \
-           "}" + "\n" \
-           f"</script>" + "\n" \
-           f"</head><body>" + "\n" \
-           f"<h1><div id='answer' style=\"color:{color}\">" + "\n" \
-           f"{text}</div></h1>" + "\n" \
-           f"<br><br>" + "\n" \
-           f"<button  type='button' onclick='playagain()'>Play Again</button>" + "\n" \
-           f"</body>" + "\n" \
-           f"</html>"
+    return render_template('answer.html', color=color, text=text, difficulty=difficulty)
 
 def save_score():
     global difficulty

@@ -1,0 +1,32 @@
+<html>
+    <head>
+           <title>World of games - Memory Game</title>
+    </head>
+    <script>
+     function loadgame(){
+         var e = document.getElementById('secret');
+    	 e.innerText = '{{join_list}}';
+         setTimeout(() => { e.innerText = ''; }, {{time}});
+     }
+     function playgame(){
+         var protocol = window.location.protocol
+         var hostname = window.location.hostname
+         var e = document.getElementById('numbers');
+         var result = e.value;
+         var url = protocol + '//' + hostname + ':' + window.location.port + '/mg_answer?numbers=' + result
+         console.log(url);
+         window.open(url, '_self')
+     }
+    </script>
+    <body onload='loadgame()'>
+       <h1>Memory Game</h1>
+       <br>
+       <h2>Remember this numbers: </h2>
+       <div id='secret' style='color:red'></div>
+       <br>
+       <label for='numbers'>Please enter the numbers you saw, seperated by commas:</label>
+       <input type='text' id='numbers'>
+       <br><br>
+       <button id='btn_play' type='button' onclick='playgame()'>Play</button>
+    </body>
+</html>

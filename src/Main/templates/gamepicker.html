@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <title>World of games</title>
+        <script>
+            function playgame(){
+                var e = document.getElementById('games');
+                var gameName = e.options[e.selectedIndex].value;
+                var url = null
+                var protocol = window.location.protocol
+                var hostname = window.location.hostname
+                switch(gameName)
+                {
+                    case 'memorygame':
+                        url = protocol + '//'+ hostname + '/memorygame';
+                        break;
+                    case 'guessgame':
+                        url = protocol + '//'+ hostname + '/guessgame';
+                        break;
+                    case 'currecyrollete':
+                        url = protocol + '//'+ hostname + '/currecyrollete';
+                        break;
+                    case 'score':
+                        url = protocol + '//'+ hostname + '/getscore';
+                        break;
+                }
+                var f = document.getElementById('difficulty');
+                var difficulty = f.options[f.selectedIndex].value;
+                url += '?difficulty=' + difficulty;
+                window.open(url)
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Choose a game to play</h1>
+        <br>
+        <label for='games'>Choose a game to play</label>
+        <select id='games'>
+          <option value='memorygame' selected>Memory Game</option>
+          <option value='guessgame'>Guess Game</option>
+          <option value='currecyrollete'>Currency Roulette</option>
+          <option value='score'>See your Score</option>
+        </select>
+        <br>
+        <label for='difficulty'>Choose difficulty</label>
+        <select id='difficulty'>
+          <option value='1' selected>1</option>
+          <option value='2'>2</option>
+          <option value='3'>3</option>
+          <option value='4'>4</option>
+          <option value='5'>5</option>
+        </select>
+        <br><br>
+        <button  type='button' onclick='playgame()'>Start Playing</button>
+    </body>
+</html>
