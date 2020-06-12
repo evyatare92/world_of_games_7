@@ -7,25 +7,20 @@ services:
       port: 3306
   games:
   - name: wog-maingame-svc
-    type: NodePort
+    type: ClusterIP
     selector: maingame
-    nodeport: 30000
   - name: wog-guessgame-svc
-    type: NodePort
+    type: ClusterIP
     selector: guessgame
-    nodeport: 30002
   - name: wog-memorygame-svc
-    type: NodePort
+    type: ClusterIP
     selector: memorygame
-    nodeport: 30001
   - name: wog-currecyrollete-svc
-    type: NodePort
+    type: ClusterIP
     selector: currecyrollete
-    nodeport: 30003
   - name: wog-scores-svc
-    type: NodePort
+    type: ClusterIP
     selector: scores
-    nodeport: 30004
 
 deployments:
   version: apps/v1
