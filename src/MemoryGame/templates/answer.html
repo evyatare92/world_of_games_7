@@ -5,7 +5,7 @@
            function playagain(){
             var protocol = window.location.protocol
             var hostname = window.location.hostname
-           	var url = protocol + '//' + hostname + ':' + window.location.port + '/memorygame?difficulty=' + {{difficulty}}
+           	var url = protocol + '//' + hostname + ':' + window.location.port + '/memorygame/playgame?difficulty=' + {{difficulty}}
            	console.log(url);
            	window.open(url, '_self')
            }

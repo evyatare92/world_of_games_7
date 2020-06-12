@@ -8,7 +8,7 @@
                 var hostname = window.location.hostname
                 var e = document.getElementById('choise');
                 var result = e.value;
-                var url = protocol + '//' + hostname + ':' + window.location.port + '/gg_answer?user_num=' + result
+                var url = protocol + '//' + hostname + ':' + window.location.port + '/guessgame/gg_answer?user_num=' + result
                 console.log(url);
                 window.open(url, '_self')
             }

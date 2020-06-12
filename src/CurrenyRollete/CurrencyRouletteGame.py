@@ -28,7 +28,7 @@ def get_guess_from_user():
     return float(input('How much {} dollars are in shekels?: '.format(usd_amount)))
 
 
-@app.route('/currecyrollete', methods=['GET'])
+@app.route('/playgame', methods=['GET'])
 def load_screen():
     global difficulty, usd_amount
     difficulty = int(request.args.get('difficulty'))

@@ -1,5 +1,5 @@
 dashboard:
   enabled: true
-  domain: traefik.example.com
+  domain: worldofgames.evyatare.com
 rbac:
   enabled: true

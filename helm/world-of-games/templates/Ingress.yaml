@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: wog-path
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.frontend.rule.type: PathPrefixStrip
+spec:
+  rules:
+  - host: worldofgames.evyatare.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: wog-maingame-svc
+          servicePort: http
+      - path: /guessgame
+        backend:
+          serviceName: wog-guessgame-svc
+          servicePort: http
+      - path: /memorygame
+        backend:
+          serviceName: wog-memorygame-svc
+          servicePort: http
+      - path: /currecyrollete
+        backend:
+          serviceName: wog-currecyrollete-svc
+          servicePort: http
+      - path: /score
+        backend:
+          serviceName: wog-scores-svc
+          servicePort: http

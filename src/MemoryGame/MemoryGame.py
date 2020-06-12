@@ -29,7 +29,8 @@ def is_list_equal(list1, list2):
         raise ValueError("Must me numeric")
     return are_equal
 
-@app.route('/memorygame', methods=['GET'])
+
+@app.route('/playgame', methods=['GET'])
 def load_screen():
     global difficulty, TIME, comp_list
     difficulty = int(request.args.get('difficulty'))

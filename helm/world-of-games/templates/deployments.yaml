@@ -102,7 +102,7 @@ spec:
                     key: password
             volumeMounts:
             - name: wog-persistent-storage
-              mountPath: /var/lib/mysql
+              mountPath: /var/lib/mysql2
       volumes:
         - name: wog-persistent-storage
           persistentVolumeClaim:

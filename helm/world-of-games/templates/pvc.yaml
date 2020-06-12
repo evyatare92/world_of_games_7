@@ -5,7 +5,7 @@ metadata:
   labels:
     app: wogdb
 spec:
-  sorageClassName: adisk
+  storageClassName: default
   accessModes:
     - ReadWriteOnce
   resources:

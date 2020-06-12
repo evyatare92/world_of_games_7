@@ -34,7 +34,7 @@ def compare_results(user_num):
     return user_num == secret_number
 
 
-@app.route('/guessgame', methods=['GET'])
+@app.route('/playgame', methods=['GET'])
 def load_screen():
     global difficulty, secret_number
     difficulty = int(request.args.get('difficulty'))
